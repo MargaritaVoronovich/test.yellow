@@ -35,7 +35,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/users")
+    @PostMapping("/users/register")
     public ResponseEntity<?> register(@Valid @RequestBody final User user) throws URISyntaxException, ParseException {
         final Resource<User> resource = assembler.toResource(userService.create(user));
 
@@ -53,7 +53,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok("token!!!");
+        return ResponseEntity.ok(userService.getToken(user.getLogin()));
     }
 
     @GetMapping("/users")

@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import test.yellow.test.model.User;
 import test.yellow.test.repository.UserRepository;
+import test.yellow.test.security.TokenManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,11 +14,17 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository repository;
     private final BCryptPasswordEncoder encoder;
+    private final TokenManager tokenManager;
 
     @Autowired
-    public UserService(UserRepository repository, BCryptPasswordEncoder encoder) {
+    public UserService(
+            UserRepository repository,
+            BCryptPasswordEncoder encoder,
+            TokenManager tokenManager
+    ) {
         this.repository = repository;
         this.encoder = encoder;
+        this.tokenManager = tokenManager;
     }
 
     public User create(User user) {
@@ -38,5 +45,9 @@ public class UserService {
 
     public boolean isValidPassword(String password, User user) {
         return encoder.matches(password, user.getPassword());
+    }
+
+    public String getToken(String login) {
+        return tokenManager.create(login);
     }
 }
