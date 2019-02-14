@@ -3,10 +3,13 @@ package test.yellow.test.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import test.yellow.test.model.User;
 import test.yellow.test.resourceassembler.UserResourceAssembler;
+import test.yellow.test.security.TokenManager;
 import test.yellow.test.service.user.UserService;
 
 import javax.validation.Valid;
@@ -53,12 +56,15 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(userService.getToken(user.getLogin()));
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set(TokenManager.HEADER_STRING, userService.getToken(user.getLogin()));
+
+        return new ResponseEntity<>(null, responseHeaders, HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/users")
     public Resources<Resource<User>> all() {
-        final List<Resource<User>> users = userService.getAll().stream()
+        final List<Resource<User>> users = userService.findAll().stream()
                 .map(assembler::toResource)
                 .collect(Collectors.toList());
 
@@ -68,7 +74,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public ResponseEntity<?> one(@PathVariable final Long id) {
-        final Optional<User> user = userService.getById(id);
+        final Optional<User> user = userService.findById(id);
 
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();

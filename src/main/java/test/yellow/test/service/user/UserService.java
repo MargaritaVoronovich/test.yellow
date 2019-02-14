@@ -31,7 +31,7 @@ public class UserService {
         return repository.save(user);
     }
 
-    public Optional<User> getById(final Long id) {
+    public Optional<User> findById(final Long id) {
         return repository.findById(id);
     }
 
@@ -39,7 +39,7 @@ public class UserService {
         return Optional.ofNullable(repository.findByLogin(login));
     }
 
-    public List<User> getAll() {
+    public List<User> findAll() {
         return repository.findAll();
     }
 

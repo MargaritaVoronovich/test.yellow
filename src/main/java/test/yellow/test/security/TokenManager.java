@@ -8,6 +8,8 @@ import java.util.Date;
 
 @Component
 public class TokenManager {
+    public static final String HEADER_STRING = "Authorization";
+
     private static final String SECRET = "SecretKeyToGenJWTs";
     private static final long EXPIRATION_TIME = 864_000_000; // 10 days
     private static final String TOKEN_PREFIX = "Bearer ";

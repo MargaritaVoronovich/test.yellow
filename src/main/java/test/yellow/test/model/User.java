@@ -6,6 +6,9 @@ import test.yellow.test.service.listener.UserEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @Table(name = "users")
@@ -24,12 +27,17 @@ public class User implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Race> races;
+
     public User() {
     }
 
-    public User(String login, String password) {
+    public User(String login, String password, Race... races) {
         this.login = login;
         this.password = password;
+        this.races = Stream.of(races).collect(Collectors.toSet());
+        this.races.forEach(x -> x.setUser(this));
     }
 
     public void setPassword(final String password) {
@@ -46,5 +54,27 @@ public class User implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (!id.equals(user.id)) return false;
+        if (!login.equals(user.login)) return false;
+        if (!password.equals(user.password)) return false;
+        return races != null ? races.equals(user.races) : user.races == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + login.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + (races != null ? races.hashCode() : 0);
+        return result;
     }
 }
