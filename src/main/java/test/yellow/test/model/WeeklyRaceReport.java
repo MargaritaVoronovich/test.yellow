@@ -1,33 +1,62 @@
 package test.yellow.test.model;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import test.yellow.test.repository.RaceRepository;
-
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
 public class WeeklyRaceReport implements Serializable {
-    public Long avgSpeed;
-    public Long avgTime;
-    public Long totalDistance;
-    public Date weekStart;
-    public Date weekEnd;
+    private Long avgSpeed;
+    private Long avgTime;
+    private Long totalDistance;
+    private Date weekStart;
+    private Date weekEnd;
 
-    private final RaceRepository repository;
-
-    @Autowired
-    public WeeklyRaceReport(RaceRepository repository) {
-        this.repository = repository;
+    public WeeklyRaceReport(Long avgTime, Long avgSpeed, Long totalDistance, Date weekStart, Date weekEnd) {
+        this.avgSpeed = avgSpeed;
+        this.avgTime = avgTime;
+        this.totalDistance = totalDistance;
+        this.weekStart = weekStart;
+        this.weekEnd = weekEnd;
     }
 
-    public List<WeeklyRaceReport> get(Long userId) {
-        //TODO: implement
-        return repository.getWeeklyReportByUserId(userId);
+    public Long getAvgTime() {
+        return avgTime;
+    }
+
+    public void setAvgTime(Long avgTime) {
+        this.avgTime = avgTime;
+    }
+
+    public Long getTotalDistance() {
+        return totalDistance;
+    }
+
+    public void setTotalDistance(Long totalDistance) {
+        this.totalDistance = totalDistance;
+    }
+
+    public Date getWeekStart() {
+        return weekStart;
+    }
+
+    public void setWeekStart(Date weekStart) {
+        this.weekStart = weekStart;
+    }
+
+    public Date getWeekEnd() {
+        return weekEnd;
+    }
+
+    public void setWeekEnd(Date weekEnd) {
+        this.weekEnd = weekEnd;
+    }
+
+    public Long getAvgSpeed() {
+        return avgSpeed;
+    }
+
+    public void setAvgSpeed(Long avgSpeed) {
+        this.avgSpeed = avgSpeed;
     }
 
     @Override
@@ -41,8 +70,7 @@ public class WeeklyRaceReport implements Serializable {
         if (!avgTime.equals(that.avgTime)) return false;
         if (!totalDistance.equals(that.totalDistance)) return false;
         if (!weekStart.equals(that.weekStart)) return false;
-        if (!weekEnd.equals(that.weekEnd)) return false;
-        return repository != null ? repository.equals(that.repository) : that.repository == null;
+        return weekEnd.equals(that.weekEnd);
     }
 
     @Override
@@ -52,7 +80,6 @@ public class WeeklyRaceReport implements Serializable {
         result = 31 * result + totalDistance.hashCode();
         result = 31 * result + weekStart.hashCode();
         result = 31 * result + weekEnd.hashCode();
-        result = 31 * result + (repository != null ? repository.hashCode() : 0);
         return result;
     }
 }
