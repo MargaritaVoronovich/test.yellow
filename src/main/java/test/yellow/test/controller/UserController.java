@@ -3,13 +3,10 @@ package test.yellow.test.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import test.yellow.test.model.User;
+import test.yellow.test.model.AppUser;
 import test.yellow.test.resourceassembler.UserResourceAssembler;
-import test.yellow.test.security.TokenManager;
 import test.yellow.test.service.user.UserService;
 
 import javax.validation.Valid;
@@ -38,33 +35,18 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/users/register")
-    public ResponseEntity<?> register(@Valid @RequestBody final User user) throws URISyntaxException, ParseException {
-        final Resource<User> resource = assembler.toResource(userService.create(user));
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody final AppUser appUser) throws URISyntaxException, ParseException {
+        final Resource<AppUser> resource = assembler.toResource(userService.create(appUser));
 
         return ResponseEntity
                 .created(new URI(resource.getId().expand().getHref()))
                 .body(resource);
     }
 
-    @PostMapping("/users/login")
-    public ResponseEntity<?> login(@Valid @RequestBody final User user) {
-        final Optional<User> existingUser = userService.getByLoginAndPassword(user.getLogin());
-
-        if (!existingUser.isPresent()
-                || !userService.isValidPassword(user.getPassword(), existingUser.get())) {
-            return ResponseEntity.notFound().build();
-        }
-
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set(TokenManager.HEADER_STRING, userService.getToken(user.getLogin()));
-
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.NO_CONTENT);
-    }
-
     @GetMapping("/users")
-    public Resources<Resource<User>> all() {
-        final List<Resource<User>> users = userService.findAll().stream()
+    public Resources<Resource<AppUser>> all() {
+        final List<Resource<AppUser>> users = userService.findAll().stream()
                 .map(assembler::toResource)
                 .collect(Collectors.toList());
 
@@ -74,7 +56,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public ResponseEntity<?> one(@PathVariable final Long id) {
-        final Optional<User> user = userService.findById(id);
+        final Optional<AppUser> user = userService.findById(id);
 
         if (!user.isPresent()) {
             return ResponseEntity.notFound().build();

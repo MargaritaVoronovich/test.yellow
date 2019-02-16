@@ -4,7 +4,7 @@ package test.yellow.test.service.listener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import test.yellow.test.model.User;
+import test.yellow.test.model.AppUser;
 
 import javax.persistence.PrePersist;
 
@@ -18,7 +18,7 @@ public class UserEntityListener {
     }
 
     @PrePersist
-    public void beforeSave(final User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    public void beforeSave(final AppUser appUser) {
+        appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
     }
 }

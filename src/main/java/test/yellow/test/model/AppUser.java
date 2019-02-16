@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 @Table(name = "users")
 @EntityListeners(UserEntityListener.class)
 
-public class User implements Serializable {
+public class AppUser implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -30,10 +30,10 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Race> races;
 
-    public User() {
+    public AppUser() {
     }
 
-    public User(String login, String password, Race... races) {
+    public AppUser(String login, String password, Race... races) {
         this.login = login;
         this.password = password;
         this.races = Stream.of(races).collect(Collectors.toSet());
@@ -61,12 +61,12 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User user = (User) o;
+        AppUser appUser = (AppUser) o;
 
-        if (!id.equals(user.id)) return false;
-        if (!login.equals(user.login)) return false;
-        if (!password.equals(user.password)) return false;
-        return races != null ? races.equals(user.races) : user.races == null;
+        if (!id.equals(appUser.id)) return false;
+        if (!login.equals(appUser.login)) return false;
+        if (!password.equals(appUser.password)) return false;
+        return races != null ? races.equals(appUser.races) : appUser.races == null;
     }
 
     @Override

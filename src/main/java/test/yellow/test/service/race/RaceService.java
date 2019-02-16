@@ -3,8 +3,8 @@ package test.yellow.test.service.race;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import test.yellow.test.model.Race;
+import test.yellow.test.repository.AppUserRepository;
 import test.yellow.test.repository.RaceRepository;
-import test.yellow.test.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -13,19 +13,19 @@ import java.util.Optional;
 @Service
 public class RaceService {
     private final RaceRepository raceRepository;
-    private final UserRepository userRepository;
+    private final AppUserRepository appUserRepository;
 
     @Autowired
     public RaceService(
             RaceRepository raceRepository,
-            UserRepository userRepository
+            AppUserRepository appUserRepository
     ) {
         this.raceRepository = raceRepository;
-        this.userRepository = userRepository;
+        this.appUserRepository = appUserRepository;
     }
 
     public Race create(Race race, Long userId) {
-        return userRepository.findById(userId).map(user -> {
+        return appUserRepository.findById(userId).map(user -> {
             race.setUser(user);
             return raceRepository.save(race);
         }).orElseThrow(() -> new EntityNotFoundException("UserId " + userId + " not found"));
