@@ -3,11 +3,9 @@ package test.yellow.test.service.race;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import test.yellow.test.model.Race;
-import test.yellow.test.model.WeeklyRaceReport;
 import test.yellow.test.repository.RaceRepository;
 import test.yellow.test.repository.UserRepository;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -16,17 +14,14 @@ import java.util.Optional;
 public class RaceService {
     private final RaceRepository raceRepository;
     private final UserRepository userRepository;
-    private final EntityManager entityManager;
 
     @Autowired
     public RaceService(
             RaceRepository raceRepository,
-            UserRepository userRepository,
-            EntityManager entityManager
+            UserRepository userRepository
     ) {
         this.raceRepository = raceRepository;
         this.userRepository = userRepository;
-        this.entityManager = entityManager;
     }
 
     public Race create(Race race, Long userId) {
@@ -54,9 +49,5 @@ public class RaceService {
         race.setRaceDate(raceFromJson.getRaceDate());
 
         return raceRepository.save(race);
-    }
-
-    public List<WeeklyRaceReport> getWeeklyReport(Long userId) {
-        return raceRepository.getWeeklyReportByUserId(userId, entityManager);
     }
 }

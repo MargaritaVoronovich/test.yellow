@@ -11,7 +11,13 @@ public class WeeklyRaceReport implements Serializable {
     private Date weekStart;
     private Date weekEnd;
 
-    public WeeklyRaceReport(Long avgTime, Long avgSpeed, Long totalDistance, Date weekStart, Date weekEnd) {
+    public WeeklyRaceReport(
+            Long avgTime,
+            Long avgSpeed,
+            Long totalDistance,
+            Date weekStart,
+            Date weekEnd
+    ) {
         this.avgSpeed = avgSpeed;
         this.avgTime = avgTime;
         this.totalDistance = totalDistance;
