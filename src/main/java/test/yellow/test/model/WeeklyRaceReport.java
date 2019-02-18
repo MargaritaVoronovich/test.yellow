@@ -5,15 +5,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class WeeklyRaceReport implements Serializable {
-    private Long avgSpeed;
-    private Long avgTime;
+    private Float avgSpeed;
+    private Float avgTime;
     private Long totalDistance;
     private Date weekStart;
     private Date weekEnd;
 
     public WeeklyRaceReport(
-            Long avgTime,
-            Long avgSpeed,
+            Float avgTime,
+            Float avgSpeed,
             Long totalDistance,
             Date weekStart,
             Date weekEnd
@@ -25,11 +25,11 @@ public class WeeklyRaceReport implements Serializable {
         this.weekEnd = weekEnd;
     }
 
-    public Long getAvgTime() {
+    public Float getAvgTime() {
         return avgTime;
     }
 
-    public void setAvgTime(Long avgTime) {
+    public void setAvgTime(Float avgTime) {
         this.avgTime = avgTime;
     }
 
@@ -57,11 +57,11 @@ public class WeeklyRaceReport implements Serializable {
         this.weekEnd = weekEnd;
     }
 
-    public Long getAvgSpeed() {
+    public Float getAvgSpeed() {
         return avgSpeed;
     }
 
-    public void setAvgSpeed(Long avgSpeed) {
+    public void setAvgSpeed(Float avgSpeed) {
         this.avgSpeed = avgSpeed;
     }
 
