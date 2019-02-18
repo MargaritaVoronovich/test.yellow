@@ -52,10 +52,10 @@ public class RaceReportServiceTest {
 
     @Test
     public void testGetWeeklyReport() {
-        List<WeeklyRaceReport> weeklyRaceReports = raceReportService.getWeeklyReport(userId);
+        final List<WeeklyRaceReport> weeklyRaceReports = raceReportService.getWeeklyReport(userId);
 
-        WeeklyRaceReport week1 = weeklyRaceReports.get(0);
-        WeeklyRaceReport week2 = weeklyRaceReports.get(1);
+        final WeeklyRaceReport week1 = weeklyRaceReports.get(0);
+        final WeeklyRaceReport week2 = weeklyRaceReports.get(1);
 
         assertThat(week1.getWeekStart()).isEqualTo(Date.valueOf(LocalDate.of(YEAR, MONTH, 4)));
         assertThat(week1.getWeekEnd()).isEqualTo(Date.valueOf(LocalDate.of(YEAR, MONTH, 10)));
@@ -71,22 +71,21 @@ public class RaceReportServiceTest {
     }
 
     private void createUser() {
-        AppUser appUser = new AppUser("test@user.test", "testPassword");
-        AppUser newUser = userService.create(appUser);
+        final AppUser newUser = userService.create(new AppUser("test@user.test", "testPassword"));
 
         userId = newUser.getId();
     }
 
     private void createRaces() {
         //week1 (2019-02-04 - 2019-02-10)
-        Race race1 = new Race(10L, 20L, Date.valueOf(LocalDate.of(YEAR, MONTH, 5)));
-        Race race2 = new Race(30L, 40L, Date.valueOf(LocalDate.of(YEAR, MONTH, 9)));
+        final Race race1 = new Race(10L, 20L, Date.valueOf(LocalDate.of(YEAR, MONTH, 5)));
+        final Race race2 = new Race(30L, 40L, Date.valueOf(LocalDate.of(YEAR, MONTH, 9)));
 
         //week2 (2019-02-11 - 2019-02-17)
-        Race race11 = new Race(50L, 60L, Date.valueOf(LocalDate.of(YEAR, MONTH, 12)));
-        Race race22 = new Race(70L, 80L, Date.valueOf(LocalDate.of(YEAR, MONTH, 16)));
+        final Race race11 = new Race(50L, 60L, Date.valueOf(LocalDate.of(YEAR, MONTH, 12)));
+        final Race race22 = new Race(70L, 80L, Date.valueOf(LocalDate.of(YEAR, MONTH, 16)));
 
-        List<Race> raceList = new ArrayList<>();
+        final List<Race> raceList = new ArrayList<>();
 
         raceList.add(race1);
         raceList.add(race2);
